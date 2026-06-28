@@ -51,6 +51,8 @@ nav {
   color: #fff; font-weight: 900; font-size: 0.85rem;
 }
 .logo-mark span { transform: translateY(-1px); }
+.logo-img { height: 40px; width: auto; object-fit: contain; display: block; }
+.logo-img--footer { height: 34px; opacity: 0.85; }
 .nav-links { display: flex; gap: 28px; font-size: 0.92rem; font-weight: 500; color: var(--slate); }
 .nav-links a:hover { color: var(--ink); }
 .nav-cta {
