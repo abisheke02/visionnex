@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import logo from '/logo.png'
 
 export default function Nav() {
@@ -19,10 +20,11 @@ export default function Nav() {
             <img src={logo} alt="VisionNex Technologies" className="logo-img" />
           </a>
           <div className="nav-links">
-            <a href="#services">Services</a>
-            <a href="#products">Products</a>
-            <a href="#process">How we work</a>
-            <a href="#contact">Contact</a>
+            <a href="/#services">Services</a>
+            <a href="/#products">Products</a>
+            <a href="/#process">How we work</a>
+            <Link to="/prototypes">Prototypes</Link>
+            <a href="/#contact">Contact</a>
           </div>
           <div className="nav-right">
             <a className="nav-cta" href="#contact">Get a quote</a>
@@ -41,12 +43,13 @@ export default function Nav() {
       </nav>
 
       <div className={`mobile-nav${isOpen ? ' open' : ''}`} aria-hidden={!isOpen}>
-        <a href="#services"  onClick={close}>Services</a>
-        <a href="#products"  onClick={close}>Products</a>
-        <a href="#portfolio" onClick={close}>Portfolio</a>
-        <a href="#process"   onClick={close}>How we work</a>
-        <a href="#faq"       onClick={close}>FAQ</a>
-        <a href="#contact" className="mobile-nav-cta" onClick={close}>Get a quote →</a>
+        <a href="/#services"  onClick={close}>Services</a>
+        <a href="/#products"  onClick={close}>Products</a>
+        <a href="/#portfolio" onClick={close}>Portfolio</a>
+        <a href="/#process"   onClick={close}>How we work</a>
+        <Link to="/prototypes" onClick={close}>Prototypes</Link>
+        <a href="/#faq"       onClick={close}>FAQ</a>
+        <a href="/#contact" className="mobile-nav-cta" onClick={close}>Get a quote →</a>
       </div>
     </>
   )

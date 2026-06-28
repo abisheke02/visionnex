@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VisionNex Technologies — Live Prototypes</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080C14;--bg2:#0E1420;--bg3:#141B28;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.15);--ink:#fff;--ink2:#A8B4C8;--ink3:#5C6880;--blue:#3B6EF8;--gold:#F5B731;--green:#22C97A;--purple:#8B5CF6;--red:#F04040;--teal:#14B8A6;--vn:#6ABF1E;--r:14px;}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(8,12,20,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:64px;display:flex;align-items:center}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;cursor:pointer}
+.gem{width:30px;height:30px;border-radius:8px;background:var(--vn);display:grid;place-items:center;font-weight:900;font-size:.85rem;color:#000}
+.nav-links{display:flex;gap:4px}
+.nav-link{padding:7px 14px;border-radius:7px;font-size:.85rem;color:var(--ink2);cursor:pointer;transition:all .15s}
+.nav-link:hover{color:var(--ink);background:rgba(255,255,255,.06)}
+.nav-link.active{color:var(--vn)}
+.nav-cta{padding:8px 18px;background:var(--vn);color:#000;border:none;border-radius:99px;font-weight:700;font-size:.82rem;cursor:pointer;font-family:'Inter',sans-serif}
+/* HERO */
+.hero{padding:72px 0 48px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 0%,rgba(106,191,30,.08),transparent 70%);pointer-events:none}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--vn);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.eyebrow::before,.eyebrow::after{content:'';width:20px;height:1px;background:var(--vn)}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.6rem);font-weight:800;letter-spacing:-.035em;line-height:1.02;margin-bottom:14px}
+h1 em{font-style:normal;color:var(--vn)}
+.hero-sub{color:var(--ink2);font-size:1rem;max-width:44em;margin:0 auto 32px;line-height:1.7}
+/* FILTER TABS */
+.filters{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:40px}
+.filter-btn{padding:7px 16px;border-radius:99px;font-size:.78rem;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--ink3);font-family:'Inter',sans-serif;transition:all .15s}
+.filter-btn:hover{border-color:var(--border2);color:var(--ink)}
+.filter-btn.active{background:var(--vn);border-color:var(--vn);color:#000;font-weight:700}
+/* PROTOTYPE GRID */
+.proto-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:60px}
+@media(max-width:900px){.proto-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.proto-grid{grid-template-columns:1fr}}
+.proto-card{background:var(--bg2);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s;cursor:pointer}
+.proto-card:hover{transform:translateY(-4px);box-shadow:0 20px 48px rgba(0,0,0,.4)}
+.proto-preview{height:180px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.proto-preview-inner{width:85%;height:85%;border-radius:10px;overflow:hidden;transform:scale(.9);transition:transform .3s;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.proto-card:hover .proto-preview-inner{transform:scale(.95)}
+/* Mini UI previews */
+.mini-ui{width:100%;height:100%;padding:10px;font-size:6px;line-height:1.4;overflow:hidden}
+.mini-header{height:16px;border-radius:3px;margin-bottom:6px;display:flex;align-items:center;padding:0 6px;gap:4px}
+.mini-dot{width:4px;height:4px;border-radius:50%}
+.mini-sidebar{width:28px;background:rgba(255,255,255,.08);border-radius:3px;position:absolute;top:10px;left:10px;bottom:10px}
+.mini-content{margin-left:34px;display:flex;flex-direction:column;gap:4px}
+.mini-row{height:8px;background:rgba(255,255,255,.06);border-radius:2px}
+.mini-row.accent{background:var(--vn);opacity:.4;width:60%}
+.mini-stat{background:rgba(255,255,255,.06);border-radius:3px;padding:4px;flex:1}
+.mini-stats-row{display:flex;gap:3px;margin-bottom:4px}
+.mini-table-row{height:7px;background:rgba(255,255,255,.05);border-radius:2px;margin-bottom:2px}
+.mini-chart-bar{background:var(--blue);border-radius:2px 2px 0 0;margin-right:2px;display:inline-block;vertical-align:bottom}
+.proto-body{padding:18px}
+.proto-category{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.proto-name{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:6px}
+.proto-desc{font-size:.78rem;color:var(--ink2);line-height:1.55;margin-bottom:14px}
+.proto-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.proto-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;padding:2px 7px;border-radius:4px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--ink3)}
+.proto-footer{display:flex;align-items:center;justify-content:space-between}
+.proto-btn{padding:7px 16px;border-radius:99px;font-size:.75rem;font-weight:700;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all .15s}
+.proto-btn-primary{background:var(--vn);color:#000}
+.proto-btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(106,191,30,.3)}
+.proto-btn-ghost{background:rgba(255,255,255,.06);color:var(--ink2);border:1px solid var(--border)}
+.proto-industry{font-size:.7rem;color:var(--ink3);display:flex;align-items:center;gap:4px}
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:1100px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-weight:700;font-size:.95rem}
+.modal-subtitle{font-size:.75rem;color:var(--ink3)}
+.modal-actions{display:flex;gap:8px;align-items:center}
+.modal-close{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.07);border:none;color:var(--ink2);cursor:pointer;font-size:1rem;display:grid;place-items:center}
+.modal-iframe-wrap{flex:1;overflow:hidden}
+.modal-iframe-wrap iframe{width:100%;height:100%;border:none;min-height:560px}
+/* BUILD CTA */
+.build-cta{background:linear-gradient(135deg,#0F1A3E,#12103A);border:1px solid rgba(106,191,30,.2);border-radius:24px;padding:56px 40px;text-align:center;margin-bottom:60px}
+.build-cta h2{font-family:'Syne',sans-serif;font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:800;letter-spacing:-.03em;margin-bottom:10px}
+.build-cta p{color:var(--ink2);max-width:40em;margin:0 auto 28px;font-size:.95rem;line-height:1.7}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:12px 24px;background:var(--vn);color:#000;border:none;border-radius:99px;font-weight:700;font-size:.88rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(106,191,30,.35)}
+.btn-wa{padding:12px 24px;background:#1FAF53;color:#fff;border:none;border-radius:99px;font-weight:700;font-size:.88rem;cursor:pointer;font-family:'Inter',sans-serif}
+/* STATS BAR */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:40px;background:var(--bg2)}
+.stat{padding:20px;text-align:center;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-num{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:var(--vn)}
+.stat-lbl{font-size:.72rem;color:var(--ink3);margin-top:3px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <div class="nav-logo"><div class="gem">V</div>VisionNex</div>
+    <div class="nav-links">
+      <div class="nav-link" onclick="location.href='/'">Home</div>
+      <div class="nav-link" onclick="location.href='/services'">Services</div>
+      <div class="nav-link active">Prototypes</div>
+      <div class="nav-link" onclick="location.href='/products'">Products</div>
+      <div class="nav-link" onclick="location.href='/about'">About</div>
+    </div>
+    <button class="nav-cta" onclick="window.open('https://wa.me/91XXXXXXXXXX','_blank')">Get a quote</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Live interactive demos</div>
+    <h1>See what we build<br>before you <em>invest a rupee</em></h1>
+    <p class="hero-sub">Every prototype below is a fully working interactive demo — not a screenshot or video. Click through real screens, tap real buttons, and see exactly what your software will look and feel like. Built by VisionNex for clients across industries.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">12</div><div class="stat-lbl">PROTOTYPES LIVE</div></div>
+    <div class="stat"><div class="stat-num">8</div><div class="stat-lbl">INDUSTRIES COVERED</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-lbl">INTERACTIVE</div></div>
+    <div class="stat"><div class="stat-num">FREE</div><div class="stat-lbl">TO EXPLORE</div></div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterProtos('all',this)">All prototypes</button>
+    <button class="filter-btn" onclick="filterProtos('healthcare',this)">🏥 Healthcare</button>
+    <button class="filter-btn" onclick="filterProtos('business',this)">💼 Business</button>
+    <button class="filter-btn" onclick="filterProtos('education',this)">🎓 Education</button>
+    <button class="filter-btn" onclick="filterProtos('retail',this)">🛒 Retail</button>
+    <button class="filter-btn" onclick="filterProtos('restaurant',this)">🍽️ Restaurant</button>
+    <button class="filter-btn" onclick="filterProtos('realestate',this)">🏘️ Real Estate</button>
+    <button class="filter-btn" onclick="filterProtos('fitness',this)">💪 Fitness</button>
+  </div>
+
+  <!-- PROTOTYPE GRID -->
+  <div class="proto-grid" id="protoGrid">
+
+    <!-- 1. GRM CRM -->
+    <div class="proto-card" data-cat="business">
+      <div class="proto-preview" style="background:linear-gradient(135deg,#080C14,#0E1420)">
+        <div class="proto-preview-inner" style="background:#080C14;border:1px solid rgba(255,255,255,.08)">
+          <div style="height:26px;background:#0E1420;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;padding:0 8px;gap:6px">
+            <div style="width:20px;height:20px;background:#6ABF1E;border-radius:5px;display:grid;place-items:center;font-size:7px;font-weight:900;color:#000;flex-shrink:0">V</div>
+            <div style="font-size:7px;color:#fff;font-weight:700">GRM CRM</div>
+          </div>
+          <div style="display:flex;height:calc(100% - 26px)">
+            <div style="width:50px;background:#0E1420;border-right:1px solid rgba(255,255,255,.05);padding:6px 4px">
+              <div style="height:5px;background:rgba(59,110,248,.3);border-radius:2px;margin-bottom:4px"></div>
+              <div style="height:5px;background:rgba(255,255,255,.05);border-radius:2px;margin-bottom:4px"></div>
+              <div style="height:5px;background:rgba(255,255,255,.05);border-radius:2px;margin-bottom:4px"></div>
+              <div style="height:5px;background:rgba(255,255,255,.05);border-radius:2px"></div>
+            </div>
+            <div style="flex:1;padding:6px">
+              <div style="display:flex;gap:3px;margin-bottom:5px">
+                <div style="flex:1;background:rgba(34,201,122,.1);border:1px solid rgba(34,201,122,.2);border-radius:4px;padding:4px"><div style="font-size:5px;color:#22C97A;margin-bottom:2px">REVENUE</div><div style="font-size:8px;color:#fff;font-weight:700">₹58K</div></div>
+                <div style="flex:1;background:rgba(59,110,248,.1);border:1px solid rgba(59,110,248,.2);border-radius:4px;padding:4px"><div style="font-size:5px;color:#7BA8FA;margin-bottom:2px">CLIENTS</div><div style="font-size:8px;color:#fff;font-weight:700">3</div></div>
+                <div style="flex:1;background:rgba(245,183,49,.1);border:1px solid rgba(245,183,49,.2);border-radius:4px;padding:4px"><div style="font-size:5px;color:#F5B731;margin-bottom:2px">LEADS</div><div style="font-size:8px;color:#fff;font-weight:700">24</div></div>
+              </div>
+              <div style="background:#0E1420;border:1px solid rgba(255,255,255,.06);border-radius:4px;padding:5px">
+                <div style="font-size:5px;color:#5C6880;margin-bottom:3px">PIPELINE</div>
+                <div style="display:flex;gap:2px">
+                  <div style="flex:1;height:20px;background:rgba(255,255,255,.04);border-radius:2px;padding:2px"><div style="font-size:4px;color:#5C6880">New</div></div>
+                  <div style="flex:1;height:20px;background:rgba(59,110,248,.08);border-radius:2px;padding:2px"><div style="font-size:4px;color:#7BA8FA">Contact</div></div>
+                  <div style="flex:1;height:20px;background:rgba(245,183,49,.08);border-radius:2px;padding:2px"><div style="font-size:4px;color:#F5B731">Proposal</div></div>
+                  <div style="flex:1;height:20px;background:rgba(34,201,122,.08);border-radius:2px;padding:2px"><div style="font-size:4px;color:#22C97A">Won</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proto-body">
+        <div class="proto-category" style="color:var(--blue)">Business CRM</div>
+        <div class="proto-name">GRM CRM</div>
+        <div class="proto-desc">Complete client relationship management — pipeline, leads, tasks, invoices, and monthly revenue tracking. Built for Indian SMBs.</div>
+        <div class="proto-tags"><span class="proto-tag">CRM</span><span class="proto-tag">Pipeline</span><span class="proto-tag">Invoicing</span><span class="proto-tag">Leads</span></div>
+        <div class="proto-footer">
+          <div class="proto-industry">💼 Business</div>
+          <button class="proto-btn proto-btn-primary" onclick="openModal('GRM CRM — Business CRM','grm-crm.html')">Live demo →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. EHR Hospital -->
+    <div class="proto-card" data-cat="healthcare">
+      <div class="proto-preview" style="background:linear-gradient(135deg,#05101A,#061520)">
+        <div class="proto-preview-inner" style="background:#061B2E;border:1px solid rgba(59,130,246,.15)">
+          <div style="height:26px;background:#0A2540;border-bottom:1px solid rgba(59,130,246,.15);display:flex;align-items:center;padding:0 8px;gap:6px">
+            <div style="width:20px;height:20px;background:#3B82F6;border-radius:5px;display:grid;place-items:center;font-size:9px">🏥</div>
+            <div style="font-size:7px;color:#fff;font-weight:700">HealthNex EHR</div>
+            <div style="margin-left:auto;font-size:5px;color:#22C97A;background:rgba(34,201,122,.15);padding:1px 5px;border-radius:3px">● LIVE</div>
+          </div>
+          <div style="display:flex;height:calc(100% - 26px)">
+            <div style="width:55px;background:#0A2540;border-right:1px solid rgba(59,130,246,.1);padding:6px 5px">
+              <div style="height:5px;background:rgba(59,130,246,.4);border-radius:2px;margin-bottom:3px"></div>
+              <div style="height:5px;background:rgba(255,255,255,.05);border-radius:2px;margin-bottom:3px"></div>
+              <div style="height:5px;background:rgba(255,255,255,.05);border-radius:2px;margin-bottom:3px"></div>
+              <div style="height:5px;background:rgba(255,255,255,.05);border-radius:2px"></div>
+            </div>
+            <div style="flex:1;padding:6px">
+              <div style="display:flex;gap:3px;margin-bottom:4px">
+                <div style="flex:1;background:rgba(59,130,246,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#7BA8FA">Patients</div><div style="font-size:7px;font-weight:700;color:#fff">1,247</div></div>
+                <div style="flex:1;background:rgba(34,201,122,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#22C97A">Today OPD</div><div style="font-size:7px;font-weight:700;color:#fff">43</div></div>
+              </div>
+              <div style="background:rgba(255,255,255,.04);border-radius:3px;padding:4px">
+                <div style="font-size:5px;color:#5C6880;margin-bottom:3px">PATIENT RECORDS</div>
+                <div style="height:5px;background:rgba(255,255,255,.06);border-radius:2px;margin-bottom:2px"></div>
+                <div style="height:5px;background:rgba(255,255,255,.06);border-radius:2px;margin-bottom:2px;width:80%"></div>
+                <div style="height:5px;background:rgba(59,130,246,.2);border-radius:2px;margin-bottom:2px"></div>
+                <div style="height:5px;background:rgba(255,255,255,.06);border-radius:2px;width:60%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proto-body">
+        <div class="proto-category" style="color:#3B82F6">Healthcare EHR</div>
+        <div class="proto-name">HealthNex EHR</div>
+        <div class="proto-desc">Electronic Health Records system — patient profiles, OPD queue management, prescriptions, lab reports, and billing for hospitals and clinics.</div>
+        <div class="proto-tags"><span class="proto-tag">EHR</span><span class="proto-tag">OPD</span><span class="proto-tag">Prescriptions</span><span class="proto-tag">Lab Reports</span></div>
+        <div class="proto-footer">
+          <div class="proto-industry">🏥 Healthcare</div>
+          <button class="proto-btn proto-btn-primary" onclick="openModal('HealthNex EHR — Hospital Management','ehr')">Live demo →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Restaurant POS -->
+    <div class="proto-card" data-cat="restaurant">
+      <div class="proto-preview" style="background:linear-gradient(135deg,#1A0A00,#200E00)">
+        <div class="proto-preview-inner" style="background:#1A0800;border:1px solid rgba(249,115,22,.2)">
+          <div style="height:26px;background:#230A00;border-bottom:1px solid rgba(249,115,22,.15);display:flex;align-items:center;padding:0 8px;gap:6px">
+            <div style="width:20px;height:20px;background:#F97316;border-radius:5px;display:grid;place-items:center;font-size:9px">🍽️</div>
+            <div style="font-size:7px;color:#fff;font-weight:700">RestoNex POS</div>
+            <div style="margin-left:auto;font-size:5px;padding:1px 5px;background:rgba(249,115,22,.2);color:#FB923C;border-radius:3px">TABLE 8 ACTIVE</div>
+          </div>
+          <div style="padding:6px">
+            <div style="display:flex;gap:3px;margin-bottom:4px">
+              <div style="flex:1;background:rgba(34,201,122,.1);border-radius:3px;padding:3px;text-align:center"><div style="font-size:5px;color:#22C97A">Orders</div><div style="font-size:7px;font-weight:700;color:#fff">12</div></div>
+              <div style="flex:1;background:rgba(249,115,22,.1);border-radius:3px;padding:3px;text-align:center"><div style="font-size:5px;color:#FB923C">Revenue</div><div style="font-size:7px;font-weight:700;color:#fff">₹8,450</div></div>
+              <div style="flex:1;background:rgba(59,130,246,.1);border-radius:3px;padding:3px;text-align:center"><div style="font-size:5px;color:#7BA8FA">Tables</div><div style="font-size:7px;font-weight:700;color:#fff">6/10</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">
+              <div style="background:rgba(34,201,122,.15);border:1px solid rgba(34,201,122,.2);border-radius:3px;padding:3px;text-align:center;font-size:5px;color:#22C97A">T1 ✓</div>
+              <div style="background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.2);border-radius:3px;padding:3px;text-align:center;font-size:5px;color:#FB923C">T2 🔥</div>
+              <div style="background:rgba(255,255,255,.04);border-radius:3px;padding:3px;text-align:center;font-size:5px;color:#5C6880">T3 Free</div>
+              <div style="background:rgba(34,201,122,.15);border:1px solid rgba(34,201,122,.2);border-radius:3px;padding:3px;text-align:center;font-size:5px;color:#22C97A">T4 ✓</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proto-body">
+        <div class="proto-category" style="color:#F97316">Restaurant POS</div>
+        <div class="proto-name">RestoNex POS</div>
+        <div class="proto-desc">GST-compliant POS and billing for Indian restaurants — table management, KOT, instant tax invoices, daily reports, and menu management.</div>
+        <div class="proto-tags"><span class="proto-tag">POS</span><span class="proto-tag">GST Billing</span><span class="proto-tag">KOT</span><span class="proto-tag">Table Mgmt</span></div>
+        <div class="proto-footer">
+          <div class="proto-industry">🍽️ Restaurant</div>
+          <button class="proto-btn proto-btn-primary" onclick="openModal('RestoNex POS — Restaurant Billing','resto')">Live demo →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. School Management -->
+    <div class="proto-card" data-cat="education">
+      <div class="proto-preview" style="background:linear-gradient(135deg,#0A1020,#0C1428)">
+        <div class="proto-preview-inner" style="background:#0A1020;border:1px solid rgba(139,92,246,.2)">
+          <div style="height:26px;background:#10182E;border-bottom:1px solid rgba(139,92,246,.15);display:flex;align-items:center;padding:0 8px;gap:6px">
+            <div style="width:20px;height:20px;background:#8B5CF6;border-radius:5px;display:grid;place-items:center;font-size:9px">🎓</div>
+            <div style="font-size:7px;color:#fff;font-weight:700">SchoolNex ERP</div>
+          </div>
+          <div style="padding:6px">
+            <div style="display:flex;gap:3px;margin-bottom:4px">
+              <div style="flex:1;background:rgba(139,92,246,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#A78BFA">Students</div><div style="font-size:7px;font-weight:700;color:#fff">1,842</div></div>
+              <div style="flex:1;background:rgba(34,201,122,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#22C97A">Attendance</div><div style="font-size:7px;font-weight:700;color:#fff">94%</div></div>
+              <div style="flex:1;background:rgba(245,183,49,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#F5B731">Fee Due</div><div style="font-size:7px;font-weight:700;color:#fff">₹2.4L</div></div>
+            </div>
+            <div style="background:rgba(255,255,255,.04);border-radius:3px;padding:4px">
+              <div style="font-size:5px;color:#5C6880;margin-bottom:2px">CLASS ATTENDANCE TODAY</div>
+              <div style="display:flex;gap:1px;align-items:flex-end;height:18px">
+                <div style="flex:1;background:#8B5CF6;border-radius:1px;height:80%"></div>
+                <div style="flex:1;background:#8B5CF6;border-radius:1px;height:95%"></div>
+                <div style="flex:1;background:#8B5CF6;border-radius:1px;height:70%"></div>
+                <div style="flex:1;background:#8B5CF6;border-radius:1px;height:90%"></div>
+                <div style="flex:1;background:#8B5CF6;border-radius:1px;height:85%"></div>
+                <div style="flex:1;background:#F04040;border-radius:1px;height:60%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proto-body">
+        <div class="proto-category" style="color:#8B5CF6">Education ERP</div>
+        <div class="proto-name">SchoolNex ERP</div>
+        <div class="proto-desc">Complete school management — admissions, attendance, fee collection, exam results, parent portal, and staff management in one system.</div>
+        <div class="proto-tags"><span class="proto-tag">Admissions</span><span class="proto-tag">Attendance</span><span class="proto-tag">Fee Mgmt</span><span class="proto-tag">Parent App</span></div>
+        <div class="proto-footer">
+          <div class="proto-industry">🎓 Education</div>
+          <button class="proto-btn proto-btn-primary" onclick="openModal('SchoolNex ERP — School Management','school')">Live demo →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Real Estate -->
+    <div class="proto-card" data-cat="realestate">
+      <div class="proto-preview" style="background:linear-gradient(135deg,#0A1200,#0E1A00)">
+        <div class="proto-preview-inner" style="background:#0A1500;border:1px solid rgba(106,191,30,.2)">
+          <div style="height:26px;background:#0F1E00;border-bottom:1px solid rgba(106,191,30,.15);display:flex;align-items:center;padding:0 8px;gap:6px">
+            <div style="width:20px;height:20px;background:#6ABF1E;border-radius:5px;display:grid;place-items:center;font-size:9px">🏘️</div>
+            <div style="font-size:7px;color:#fff;font-weight:700">PlotNex CRM</div>
+          </div>
+          <div style="padding:6px">
+            <div style="display:flex;gap:3px;margin-bottom:4px">
+              <div style="flex:1;background:rgba(106,191,30,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#6ABF1E">Plots</div><div style="font-size:7px;font-weight:700;color:#fff">124</div></div>
+              <div style="flex:1;background:rgba(34,201,122,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#22C97A">Sold</div><div style="font-size:7px;font-weight:700;color:#fff">38</div></div>
+              <div style="flex:1;background:rgba(245,183,49,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#F5B731">Commission</div><div style="font-size:7px;font-weight:700;color:#fff">₹84K</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:1px">
+              <div style="height:10px;background:#6ABF1E;border-radius:1px;opacity:.8"></div>
+              <div style="height:10px;background:#F04040;border-radius:1px;opacity:.8"></div>
+              <div style="height:10px;background:#6ABF1E;border-radius:1px;opacity:.8"></div>
+              <div style="height:10px;background:rgba(255,255,255,.1);border-radius:1px"></div>
+              <div style="height:10px;background:#6ABF1E;border-radius:1px;opacity:.8"></div>
+              <div style="height:10px;background:rgba(255,255,255,.1);border-radius:1px"></div>
+            </div>
+            <div style="margin-top:4px;font-size:5px;color:#5C6880;display:flex;gap:6px"><span style="color:#6ABF1E">■ Available</span><span style="color:#F04040">■ Sold</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="proto-body">
+        <div class="proto-category" style="color:var(--vn)">Real Estate CRM</div>
+        <div class="proto-name">PlotNex CRM</div>
+        <div class="proto-desc">Real estate plot sales management — lead tracking from Meta ads, plot availability map, commission calculator, and sales pipeline for Tamil Nadu builders.</div>
+        <div class="proto-tags"><span class="proto-tag">Plot Sales</span><span class="proto-tag">Lead Tracking</span><span class="proto-tag">Meta Ads</span><span class="proto-tag">Commission</span></div>
+        <div class="proto-footer">
+          <div class="proto-industry">🏘️ Real Estate</div>
+          <button class="proto-btn proto-btn-primary" onclick="openModal('PlotNex CRM — Real Estate','realestate')">Live demo →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Fitness/Gym -->
+    <div class="proto-card" data-cat="fitness">
+      <div class="proto-preview" style="background:linear-gradient(135deg,#1A0010,#200014)">
+        <div class="proto-preview-inner" style="background:#1A0010;border:1px solid rgba(240,64,64,.2)">
+          <div style="height:26px;background:#230015;border-bottom:1px solid rgba(240,64,64,.15);display:flex;align-items:center;padding:0 8px;gap:6px">
+            <div style="width:20px;height:20px;background:#F04040;border-radius:5px;display:grid;place-items:center;font-size:9px">💪</div>
+            <div style="font-size:7px;color:#fff;font-weight:700">FitNex — Gym Manager</div>
+          </div>
+          <div style="padding:6px">
+            <div style="display:flex;gap:3px;margin-bottom:4px">
+              <div style="flex:1;background:rgba(240,64,64,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#F04040">Members</div><div style="font-size:7px;font-weight:700;color:#fff">284</div></div>
+              <div style="flex:1;background:rgba(34,201,122,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#22C97A">Active</div><div style="font-size:7px;font-weight:700;color:#fff">218</div></div>
+              <div style="flex:1;background:rgba(245,183,49,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#F5B731">Revenue</div><div style="font-size:7px;font-weight:700;color:#fff">₹1.8L</div></div>
+            </div>
+            <div style="background:rgba(255,255,255,.04);border-radius:3px;padding:4px">
+              <div style="font-size:5px;color:#5C6880;margin-bottom:3px">MEMBERSHIP EXPIRY THIS WEEK</div>
+              <div style="height:5px;background:rgba(240,64,64,.3);border-radius:2px;margin-bottom:2px;width:70%"></div>
+              <div style="height:5px;background:rgba(240,64,64,.2);border-radius:2px;margin-bottom:2px;width:45%"></div>
+              <div style="height:5px;background:rgba(240,64,64,.2);border-radius:2px;width:85%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proto-body">
+        <div class="proto-category" style="color:var(--red)">Fitness Management</div>
+        <div class="proto-name">FitNex Gym Manager</div>
+        <div class="proto-desc">Complete gym management — member profiles, membership tracking, renewal reminders via WhatsApp, attendance, and monthly revenue dashboard.</div>
+        <div class="proto-tags"><span class="proto-tag">Members</span><span class="proto-tag">Renewals</span><span class="proto-tag">WhatsApp Alerts</span><span class="proto-tag">Revenue</span></div>
+        <div class="proto-footer">
+          <div class="proto-industry">💪 Fitness</div>
+          <button class="proto-btn proto-btn-primary" onclick="openModal('FitNex — Gym Member Management','gym')">Live demo →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Inventory/Retail -->
+    <div class="proto-card" data-cat="retail">
+      <div class="proto-preview" style="background:linear-gradient(135deg,#00101A,#001520)">
+        <div class="proto-preview-inner" style="background:#001525;border:1px solid rgba(20,184,166,.2)">
+          <div style="height:26px;background:#002030;border-bottom:1px solid rgba(20,184,166,.15);display:flex;align-items:center;padding:0 8px;gap:6px">
+            <div style="width:20px;height:20px;background:#14B8A6;border-radius:5px;display:grid;place-items:center;font-size:9px">🛒</div>
+            <div style="font-size:7px;color:#fff;font-weight:700">StoreNex Inventory</div>
+          </div>
+          <div style="padding:6px">
+            <div style="display:flex;gap:3px;margin-bottom:4px">
+              <div style="flex:1;background:rgba(20,184,166,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#14B8A6">Products</div><div style="font-size:7px;font-weight:700;color:#fff">1,284</div></div>
+              <div style="flex:1;background:rgba(240,64,64,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#F04040">Low Stock</div><div style="font-size:7px;font-weight:700;color:#fff">23</div></div>
+              <div style="flex:1;background:rgba(34,201,122,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#22C97A">Today Sales</div><div style="font-size:7px;font-weight:700;color:#fff">₹24K</div></div>
+            </div>
+            <div style="background:rgba(255,255,255,.04);border-radius:3px;padding:4px">
+              <div style="font-size:5px;color:#5C6880;margin-bottom:3px">STOCK LEVELS</div>
+              <div style="display:flex;gap:2px;align-items:flex-end;height:16px">
+                <div style="flex:1;background:#14B8A6;border-radius:1px;height:90%"></div>
+                <div style="flex:1;background:#14B8A6;border-radius:1px;height:60%"></div>
+                <div style="flex:1;background:#F04040;border-radius:1px;height:20%"></div>
+                <div style="flex:1;background:#14B8A6;border-radius:1px;height:75%"></div>
+                <div style="flex:1;background:#F5B731;border-radius:1px;height:35%"></div>
+                <div style="flex:1;background:#14B8A6;border-radius:1px;height:85%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proto-body">
+        <div class="proto-category" style="color:var(--teal)">Retail Inventory</div>
+        <div class="proto-name">StoreNex Inventory</div>
+        <div class="proto-desc">Retail store management — product catalogue, stock levels, low-stock alerts, sales tracking, GST invoicing, and supplier management.</div>
+        <div class="proto-tags"><span class="proto-tag">Inventory</span><span class="proto-tag">GST Invoice</span><span class="proto-tag">Stock Alerts</span><span class="proto-tag">POS</span></div>
+        <div class="proto-footer">
+          <div class="proto-industry">🛒 Retail</div>
+          <button class="proto-btn proto-btn-primary" onclick="openModal('StoreNex — Retail Inventory Management','retail')">Live demo →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Moneylix -->
+    <div class="proto-card" data-cat="business">
+      <div class="proto-preview" style="background:linear-gradient(135deg,#080C14,#0E1420)">
+        <div class="proto-preview-inner" style="background:#080C14;border:1px solid rgba(59,110,248,.2)">
+          <div style="height:26px;background:#0E1420;border-bottom:1px solid rgba(59,110,248,.15);display:flex;align-items:center;padding:0 8px;gap:6px">
+            <div style="width:20px;height:20px;background:#3B6EF8;border-radius:5px;display:grid;place-items:center;font-size:7px;font-weight:900;color:#fff">M</div>
+            <div style="font-size:7px;color:#fff;font-weight:700">Moneylix — Finance</div>
+          </div>
+          <div style="padding:6px">
+            <div style="background:linear-gradient(135deg,rgba(59,110,248,.15),rgba(139,92,246,.1));border:1px solid rgba(59,110,248,.2);border-radius:4px;padding:5px;margin-bottom:4px;text-align:center">
+              <div style="font-size:5px;color:#7BA8FA;margin-bottom:2px">TOTAL BALANCE</div>
+              <div style="font-size:10px;font-weight:700;color:#fff">₹2,84,320</div>
+            </div>
+            <div style="display:flex;gap:3px">
+              <div style="flex:1;background:rgba(34,201,122,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#22C97A">Income</div><div style="font-size:6px;font-weight:700;color:#fff">₹58K</div></div>
+              <div style="flex:1;background:rgba(240,64,64,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#F04040">Expense</div><div style="font-size:6px;font-weight:700;color:#fff">₹22K</div></div>
+              <div style="flex:1;background:rgba(245,183,49,.1);border-radius:3px;padding:3px"><div style="font-size:5px;color:#F5B731">Savings</div><div style="font-size:6px;font-weight:700;color:#fff">₹36K</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proto-body">
+        <div class="proto-category" style="color:var(--blue)">Personal Finance</div>
+        <div class="proto-name">Moneylix</div>
+        <div class="proto-desc">Personal finance platform with automatic bank sync via India's Account Aggregator, AI transaction categorisation, budgets, and insights.</div>
+        <div class="proto-tags"><span class="proto-tag">Bank Sync</span><span class="proto-tag">AI Insights</span><span class="proto-tag">Budgets</span><span class="proto-tag">Analytics</span></div>
+        <div class="proto-footer">
+          <div class="proto-industry">💰 Fintech</div>
+          <button class="proto-btn proto-btn-primary" onclick="window.open('https://moneylix.in','_blank')">Visit live →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. Client Portal -->
+    <div class="proto-card" data-cat="business">
+      <div class="proto-preview" style="background:linear-gradient(135deg,#080C14,#0E1420)">
+        <div class="proto-preview-inner" style="background:#0E1420;border:1px solid rgba(106,191,30,.15)">
+          <div style="height:26px;background:#141B28;border-bottom:1px solid rgba(106,191,30,.1);display:flex;align-items:center;padding:0 8px;gap:6px">
+            <div style="width:20px;height:20px;background:#6ABF1E;border-radius:5px;display:grid;place-items:center;font-size:7px;font-weight:900;color:#000">V</div>
+            <div style="font-size:7px;color:#fff;font-weight:700">Client Portal</div>
+            <div style="margin-left:auto;font-size:5px;color:#22C97A">● Active Project</div>
+          </div>
+          <div style="padding:6px">
+            <div style="background:rgba(106,191,30,.08);border:1px solid rgba(106,191,30,.15);border-radius:4px;padding:5px;margin-bottom:4px">
+              <div style="font-size:5px;color:#6ABF1E;margin-bottom:2px">PROJECT PROGRESS</div>
+              <div style="height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden"><div style="width:75%;height:100%;background:linear-gradient(90deg,#6ABF1E,#3B6EF8);border-radius:3px"></div></div>
+              <div style="font-size:5px;color:#fff;margin-top:2px;text-align:right">75% complete</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div style="height:5px;background:rgba(34,201,122,.15);border-radius:2px;display:flex;align-items:center;padding:0 3px"><div style="width:3px;height:3px;background:#22C97A;border-radius:50%;margin-right:2px"></div><span style="font-size:4px;color:#22C97A">Delivered</span></div>
+              <div style="height:5px;background:rgba(245,183,49,.1);border-radius:2px;display:flex;align-items:center;padding:0 3px"><div style="width:3px;height:3px;background:#F5B731;border-radius:50%;margin-right:2px"></div><span style="font-size:4px;color:#F5B731">In progress</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="proto-body">
+        <div class="proto-category" style="color:var(--vn)">Client Portal</div>
+        <div class="proto-name">VisionNex Client Portal</div>
+        <div class="proto-desc">Your clients log in to track project progress, view deliverables, download invoices, and message the team — all in one branded portal.</div>
+        <div class="proto-tags"><span class="proto-tag">Project Tracking</span><span class="proto-tag">Invoices</span><span class="proto-tag">Messaging</span><span class="proto-tag">Milestones</span></div>
+        <div class="proto-footer">
+          <div class="proto-industry">💼 Agency Tool</div>
+          <button class="proto-btn proto-btn-primary" onclick="openModal('VisionNex Client Portal','client-portal.html')">Live demo →</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /proto-grid -->
+
+  <!-- BUILD CTA -->
+  <div class="build-cta">
+    <h2>Don't see your industry?</h2>
+    <p>We build custom software for any business — hospitals, law firms, logistics, manufacturing, coaching centres, or anything else. Tell us what you need and we'll build you a prototype in 48 hours, free, so you can see it before you commit.</p>
+    <div class="cta-btns">
+      <button class="btn-primary" onclick="window.open('https://wa.me/91XXXXXXXXXX','_blank')">WhatsApp for custom prototype →</button>
+      <button class="btn-wa" onclick="window.open('mailto:hello@visionnextechnologies.com','_blank')">Email us</button>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modalTitle">Prototype</div>
+        <div class="modal-subtitle">Interactive demo · Click and explore freely · No sign-up needed</div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" style="padding:7px 14px;font-size:.75rem" onclick="window.open('https://wa.me/91XXXXXXXXXX','_blank')">Build this for me →</button>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+    </div>
+    <div class="modal-iframe-wrap" id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// Filter
+function filterProtos(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.proto-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = 'block';
+      card.style.animation = 'fadeIn .3s ease';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+// Modal with inline prototypes
+function openModal(title, proto) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalOverlay').classList.add('open');
+  const content = document.getElementById('modalContent');
+  
+  if (proto.endsWith('.html')) {
+    content.innerHTML = `<iframe src="${proto}" style="width:100%;height:600px;border:none"></iframe>`;
+  } else {
+    // Inline demo content
+    const demos = {
+      'ehr': getEHRDemo(),
+      'resto': getRestoDemo(),
+      'school': getSchoolDemo(),
+      'realestate': getRealEstateDemo(),
+      'gym': getGymDemo(),
+      'retail': getRetailDemo()
+    };
+    content.innerHTML = `<div style="height:600px;overflow-y:auto">${demos[proto] || '<p style="padding:40px;color:#888">Demo loading...</p>'}</div>`;
+  }
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById('modalContent').innerHTML = '';
+}
+function closeModalOnOverlay(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function getEHRDemo() {
+  return `
+  <div style="font-family:'Inter',sans-serif;background:#061B2E;min-height:600px;color:#fff;display:flex">
+    <div style="width:200px;background:#0A2540;border-right:1px solid rgba(59,130,246,.15);padding:16px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px">
+        <div style="width:28px;height:28px;background:#3B82F6;border-radius:7px;display:grid;place-items:center;font-size:12px">🏥</div>
+        <div style="font-size:.85rem;font-weight:700">HealthNex EHR</div>
+      </div>
+      <div style="font-size:.65rem;color:rgba(255,255,255,.3);letter-spacing:.1em;margin-bottom:8px">MAIN</div>
+      <div style="padding:8px;border-radius:7px;background:rgba(59,130,246,.15);color:#7BA8FA;font-size:.78rem;margin-bottom:4px;cursor:pointer">📊 Dashboard</div>
+      <div style="padding:8px;border-radius:7px;color:rgba(255,255,255,.5);font-size:.78rem;margin-bottom:4px;cursor:pointer">👥 Patients</div>
+      <div style="padding:8px;border-radius:7px;color:rgba(255,255,255,.5);font-size:.78rem;margin-bottom:4px;cursor:pointer">📋 OPD Queue</div>
+      <div style="padding:8px;border-radius:7px;color:rgba(255,255,255,.5);font-size:.78rem;margin-bottom:4px;cursor:pointer">💊 Prescriptions</div>
+      <div style="padding:8px;border-radius:7px;color:rgba(255,255,255,.5);font-size:.78rem;margin-bottom:4px;cursor:pointer">🧪 Lab Reports</div>
+      <div style="padding:8px;border-radius:7px;color:rgba(255,255,255,.5);font-size:.78rem;cursor:pointer">💰 Billing</div>
+    </div>
+    <div style="flex:1;padding:20px;overflow-y:auto">
+      <div style="font-size:1rem;font-weight:700;margin-bottom:16px">Good morning, Dr. Rajan 👋</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+        <div style="background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);border-radius:10px;padding:14px">
+          <div style="font-size:.68rem;color:#7BA8FA;margin-bottom:4px">TODAY'S OPD</div>
+          <div style="font-size:1.5rem;font-weight:700">43</div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">12 waiting</div>
+        </div>
+        <div style="background:rgba(34,201,122,.1);border:1px solid rgba(34,201,122,.2);border-radius:10px;padding:14px">
+          <div style="font-size:.68rem;color:#22C97A;margin-bottom:4px">TOTAL PATIENTS</div>
+          <div style="font-size:1.5rem;font-weight:700">1,247</div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">+8 this week</div>
+        </div>
+        <div style="background:rgba(245,183,49,.1);border:1px solid rgba(245,183,49,.2);border-radius:10px;padding:14px">
+          <div style="font-size:.68rem;color:#F5B731;margin-bottom:4px">TODAY REVENUE</div>
+          <div style="font-size:1.5rem;font-weight:700">₹24,800</div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">↑ +12% vs yesterday</div>
+        </div>
+        <div style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:14px">
+          <div style="font-size:.68rem;color:#A78BFA;margin-bottom:4px">PENDING LAB</div>
+          <div style="font-size:1.5rem;font-weight:700">7</div>
+          <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:2px">Reports due</div>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px">
+        <div style="font-size:.82rem;font-weight:600;margin-bottom:12px">OPD Queue — Today</div>
+        <table style="width:100%;border-collapse:collapse;font-size:.78rem">
+          <thead><tr style="border-bottom:1px solid rgba(255,255,255,.07)">
+            <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem;font-weight:500">TOKEN</th>
+            <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem;font-weight:500">PATIENT</th>
+            <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem;font-weight:500">COMPLAINT</th>
+            <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem;font-weight:500">STATUS</th>
+          </tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:10px;color:#7BA8FA;font-weight:600">#001</td><td style="padding:10px">Rajesh Kumar, 42M</td><td style="padding:10px;color:rgba(255,255,255,.5)">Fever + Cold</td><td style="padding:10px"><span style="background:rgba(34,201,122,.1);color:#22C97A;padding:2px 8px;border-radius:99px;font-size:.65rem">Completed</span></td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:10px;color:#7BA8FA;font-weight:600">#002</td><td style="padding:10px">Priya S., 28F</td><td style="padding:10px;color:rgba(255,255,255,.5)">Back pain</td><td style="padding:10px"><span style="background:rgba(59,130,246,.1);color:#7BA8FA;padding:2px 8px;border-radius:99px;font-size:.65rem">● In consultation</span></td></tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:10px;color:#7BA8FA;font-weight:600">#003</td><td style="padding:10px">Muthu R., 65M</td><td style="padding:10px;color:rgba(255,255,255,.5)">BP checkup</td><td style="padding:10px"><span style="background:rgba(245,183,49,.1);color:#F5B731;padding:2px 8px;border-radius:99px;font-size:.65rem">Waiting</span></td></tr>
+            <tr><td style="padding:10px;color:#7BA8FA;font-weight:600">#004</td><td style="padding:10px">Anitha K., 34F</td><td style="padding:10px;color:rgba(255,255,255,.5)">Follow-up</td><td style="padding:10px"><span style="background:rgba(255,255,255,.05);color:rgba(255,255,255,.4);padding:2px 8px;border-radius:99px;font-size:.65rem">Scheduled</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>`;
+}
+
+function getRestoDemo() {
+  return `
+  <div style="font-family:'Inter',sans-serif;background:#1A0800;min-height:600px;color:#fff;display:flex">
+    <div style="width:200px;background:#230A00;border-right:1px solid rgba(249,115,22,.15);padding:16px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px">
+        <div style="width:28px;height:28px;background:#F97316;border-radius:7px;display:grid;place-items:center;font-size:12px">🍽️</div>
+        <div style="font-size:.85rem;font-weight:700">RestoNex POS</div>
+      </div>
+      <div style="font-size:.65rem;color:rgba(255,255,255,.3);letter-spacing:.1em;margin-bottom:8px">SECTIONS</div>
+      <div style="padding:8px;border-radius:7px;background:rgba(249,115,22,.15);color:#FB923C;font-size:.78rem;margin-bottom:4px;cursor:pointer">🏠 Tables</div>
+      <div style="padding:8px;border-radius:7px;color:rgba(255,255,255,.5);font-size:.78rem;margin-bottom:4px;cursor:pointer">📋 Menu</div>
+      <div style="padding:8px;border-radius:7px;color:rgba(255,255,255,.5);font-size:.78rem;margin-bottom:4px;cursor:pointer">🧾 Orders / KOT</div>
+      <div style="padding:8px;border-radius:7px;color:rgba(255,255,255,.5);font-size:.78rem;margin-bottom:4px;cursor:pointer">💰 Billing + GST</div>
+      <div style="padding:8px;border-radius:7px;color:rgba(255,255,255,.5);font-size:.78rem;cursor:pointer">📊 Daily Report</div>
+    </div>
+    <div style="flex:1;padding:20px">
+      <div style="font-size:1rem;font-weight:700;margin-bottom:6px">Table Management</div>
+      <div style="font-size:.78rem;color:rgba(255,255,255,.4);margin-bottom:16px">Sunday, June 28, 2026 · Lunch service active</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px">
+        ${[1,2,3,4,5,6,7,8,9,10].map((t,i) => {
+          const statuses = ['occupied','occupied','free','occupied','free','occupied','free','occupied','occupied','free'];
+          const s = statuses[i];
+          const colors = {occupied:'rgba(249,115,22,.15)',free:'rgba(34,201,122,.08)',bill:'rgba(240,64,64,.15)'};
+          const tc = {occupied:'#FB923C',free:'#22C97A',bill:'#F04040'};
+          return `<div style="background:${colors[s]};border:1px solid ${tc[s]}33;border-radius:10px;padding:12px;text-align:center;cursor:pointer" onclick="alert('Table ${t} — ${s === 'occupied' ? 'View order and generate GST bill' : 'New order'}')">
+            <div style="font-size:.75rem;font-weight:700;color:${tc[s]}">T${t}</div>
+            <div style="font-size:.62rem;color:${tc[s]};margin-top:3px">${s === 'occupied' ? '🔥 Active' : '✓ Free'}</div>
+            ${s === 'occupied' ? `<div style="font-size:.6rem;color:rgba(255,255,255,.4);margin-top:4px">₹${(Math.random()*500+200).toFixed(0)}</div>` : ''}
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div style="background:rgba(249,115,22,.1);border:1px solid rgba(249,115,22,.2);border-radius:10px;padding:14px">
+          <div style="font-size:.68rem;color:#FB923C;margin-bottom:4px">TODAY'S ORDERS</div>
+          <div style="font-size:1.5rem;font-weight:700">34</div>
+        </div>
+        <div style="background:rgba(34,201,122,.1);border:1px solid rgba(34,201,122,.2);border-radius:10px;padding:14px">
+          <div style="font-size:.68rem;color:#22C97A;margin-bottom:4px">REVENUE</div>
+          <div style="font-size:1.5rem;font-weight:700">₹18,450</div>
+        </div>
+        <div style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:14px">
+          <div style="font-size:.68rem;color:#A78BFA;margin-bottom:4px">GST COLLECTED</div>
+          <div style="font-size:1.5rem;font-weight:700">₹1,660</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function getSchoolDemo() {
+  return `<div style="font-family:'Inter',sans-serif;background:#0A1020;min-height:600px;color:#fff;padding:20px">
+    <div style="font-size:1rem;font-weight:700;margin-bottom:16px">🎓 SchoolNex ERP — Dashboard</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+      <div style="background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#A78BFA;margin-bottom:4px">STUDENTS</div><div style="font-size:1.5rem;font-weight:700">1,842</div></div>
+      <div style="background:rgba(34,201,122,.1);border:1px solid rgba(34,201,122,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#22C97A;margin-bottom:4px">ATTENDANCE TODAY</div><div style="font-size:1.5rem;font-weight:700">94.2%</div></div>
+      <div style="background:rgba(245,183,49,.1);border:1px solid rgba(245,183,49,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#F5B731;margin-bottom:4px">FEES COLLECTED</div><div style="font-size:1.5rem;font-weight:700">₹12.4L</div></div>
+      <div style="background:rgba(240,64,64,.1);border:1px solid rgba(240,64,64,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#F04040;margin-bottom:4px">FEES DUE</div><div style="font-size:1.5rem;font-weight:700">₹2.4L</div></div>
+    </div>
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px">
+      <div style="font-size:.82rem;font-weight:600;margin-bottom:12px">Recent admissions</div>
+      <table style="width:100%;border-collapse:collapse;font-size:.78rem">
+        <thead><tr style="border-bottom:1px solid rgba(255,255,255,.07)">
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">STUDENT</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">CLASS</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">PARENT</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">FEE STATUS</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:10px">Kavitha R.</td><td style="padding:10px;color:rgba(255,255,255,.5)">Grade 8A</td><td style="padding:10px;color:rgba(255,255,255,.5)">Ramesh R.</td><td style="padding:10px"><span style="background:rgba(34,201,122,.1);color:#22C97A;padding:2px 8px;border-radius:99px;font-size:.65rem">Paid</span></td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:10px">Arjun M.</td><td style="padding:10px;color:rgba(255,255,255,.5)">Grade 6B</td><td style="padding:10px;color:rgba(255,255,255,.5)">Muthu M.</td><td style="padding:10px"><span style="background:rgba(245,183,49,.1);color:#F5B731;padding:2px 8px;border-radius:99px;font-size:.65rem">Partial</span></td></tr>
+          <tr><td style="padding:10px">Divya S.</td><td style="padding:10px;color:rgba(255,255,255,.5)">Grade 10A</td><td style="padding:10px;color:rgba(255,255,255,.5)">Suresh S.</td><td style="padding:10px"><span style="background:rgba(240,64,64,.1);color:#F04040;padding:2px 8px;border-radius:99px;font-size:.65rem">Due</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function getRealEstateDemo() {
+  return `<div style="font-family:'Inter',sans-serif;background:#0A1500;min-height:600px;color:#fff;padding:20px">
+    <div style="font-size:1rem;font-weight:700;margin-bottom:16px">🏘️ PlotNex CRM — Real Estate Management</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+      <div style="background:rgba(106,191,30,.1);border:1px solid rgba(106,191,30,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#6ABF1E;margin-bottom:4px">TOTAL PLOTS</div><div style="font-size:1.5rem;font-weight:700">124</div></div>
+      <div style="background:rgba(34,201,122,.1);border:1px solid rgba(34,201,122,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#22C97A;margin-bottom:4px">SOLD</div><div style="font-size:1.5rem;font-weight:700">38</div></div>
+      <div style="background:rgba(245,183,49,.1);border:1px solid rgba(245,183,49,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#F5B731;margin-bottom:4px">COMMISSION EARNED</div><div style="font-size:1.5rem;font-weight:700">₹84,000</div></div>
+      <div style="background:rgba(59,110,248,.1);border:1px solid rgba(59,110,248,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#7BA8FA;margin-bottom:4px">HOT LEADS</div><div style="font-size:1.5rem;font-weight:700">17</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px">
+        <div style="font-size:.82rem;font-weight:600;margin-bottom:10px">Recent leads from Meta Ads</div>
+        ${['Ravi Kumar — ₹8L budget','Priya M. — ₹12L budget','Senthil K. — ₹6L budget','Anand R. — ₹15L budget'].map(l => `
+          <div style="padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;font-size:.78rem">
+            <span>${l.split('—')[0]}</span><span style="color:#6ABF1E">${l.split('—')[1]}</span>
+          </div>`).join('')}
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px">
+        <div style="font-size:.82rem;font-weight:600;margin-bottom:10px">Plot availability map</div>
+        <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:3px">
+          ${Array.from({length:40},(_,i)=>i).map(i => {
+            const sold = [2,5,8,12,15,18,22,25,28,30].includes(i);
+            return `<div style="height:18px;border-radius:3px;background:${sold?'rgba(240,64,64,.3)':'rgba(106,191,30,.2)'};border:1px solid ${sold?'rgba(240,64,64,.4)':'rgba(106,191,30,.3)'};cursor:pointer;font-size:6px;display:grid;place-items:center;color:${sold?'#F04040':'#6ABF1E'}" title="Plot ${i+1}">${i+1}</div>`;
+          }).join('')}
+        </div>
+        <div style="display:flex;gap:10px;margin-top:8px;font-size:.68rem"><span style="color:#6ABF1E">■ Available (86)</span><span style="color:#F04040">■ Sold (38)</span></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function getGymDemo() {
+  return `<div style="font-family:'Inter',sans-serif;background:#1A0010;min-height:600px;color:#fff;padding:20px">
+    <div style="font-size:1rem;font-weight:700;margin-bottom:16px">💪 FitNex — Gym Member Management</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+      <div style="background:rgba(240,64,64,.1);border:1px solid rgba(240,64,64,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#F04040;margin-bottom:4px">TOTAL MEMBERS</div><div style="font-size:1.5rem;font-weight:700">284</div></div>
+      <div style="background:rgba(34,201,122,.1);border:1px solid rgba(34,201,122,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#22C97A;margin-bottom:4px">ACTIVE</div><div style="font-size:1.5rem;font-weight:700">218</div></div>
+      <div style="background:rgba(245,183,49,.1);border:1px solid rgba(245,183,49,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#F5B731;margin-bottom:4px">MONTHLY REVENUE</div><div style="font-size:1.5rem;font-weight:700">₹1.84L</div></div>
+      <div style="background:rgba(240,64,64,.1);border:1px solid rgba(240,64,64,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#F04040;margin-bottom:4px">EXPIRING THIS WEEK</div><div style="font-size:1.5rem;font-weight:700">12</div></div>
+    </div>
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px">
+      <div style="font-size:.82rem;font-weight:600;margin-bottom:12px">Members expiring this week — Auto WhatsApp reminder sent</div>
+      <table style="width:100%;border-collapse:collapse;font-size:.78rem">
+        <thead><tr style="border-bottom:1px solid rgba(255,255,255,.07)">
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">MEMBER</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">PLAN</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">EXPIRES</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">REMINDER</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">ACTION</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:10px">Vikram S.</td><td style="padding:10px;color:rgba(255,255,255,.5)">₹1,500/mo</td><td style="padding:10px;color:#F04040">Jun 30</td><td style="padding:10px"><span style="background:rgba(34,201,122,.1);color:#22C97A;padding:2px 8px;border-radius:99px;font-size:.65rem">✓ Sent</span></td><td style="padding:10px"><button onclick="alert('Renewal collected!')" style="background:rgba(106,191,30,.15);color:#6ABF1E;border:1px solid rgba(106,191,30,.2);border-radius:6px;padding:4px 10px;font-size:.7rem;cursor:pointer">Renew</button></td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:10px">Meena K.</td><td style="padding:10px;color:rgba(255,255,255,.5)">₹4,000/qtr</td><td style="padding:10px;color:#F5B731">Jul 1</td><td style="padding:10px"><span style="background:rgba(34,201,122,.1);color:#22C97A;padding:2px 8px;border-radius:99px;font-size:.65rem">✓ Sent</span></td><td style="padding:10px"><button onclick="alert('Renewal collected!')" style="background:rgba(106,191,30,.15);color:#6ABF1E;border:1px solid rgba(106,191,30,.2);border-radius:6px;padding:4px 10px;font-size:.7rem;cursor:pointer">Renew</button></td></tr>
+          <tr><td style="padding:10px">Arun P.</td><td style="padding:10px;color:rgba(255,255,255,.5)">₹12,000/yr</td><td style="padding:10px;color:#F5B731">Jul 2</td><td style="padding:10px"><span style="background:rgba(245,183,49,.1);color:#F5B731;padding:2px 8px;border-radius:99px;font-size:.65rem">Pending</span></td><td style="padding:10px"><button onclick="alert('WhatsApp sent to Arun!')" style="background:rgba(59,110,248,.15);color:#7BA8FA;border:1px solid rgba(59,110,248,.2);border-radius:6px;padding:4px 10px;font-size:.7rem;cursor:pointer">Send WA</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+function getRetailDemo() {
+  return `<div style="font-family:'Inter',sans-serif;background:#001525;min-height:600px;color:#fff;padding:20px">
+    <div style="font-size:1rem;font-weight:700;margin-bottom:16px">🛒 StoreNex — Retail Inventory Management</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+      <div style="background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#14B8A6;margin-bottom:4px">PRODUCTS</div><div style="font-size:1.5rem;font-weight:700">1,284</div></div>
+      <div style="background:rgba(240,64,64,.1);border:1px solid rgba(240,64,64,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#F04040;margin-bottom:4px">LOW STOCK</div><div style="font-size:1.5rem;font-weight:700">23</div></div>
+      <div style="background:rgba(34,201,122,.1);border:1px solid rgba(34,201,122,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#22C97A;margin-bottom:4px">TODAY SALES</div><div style="font-size:1.5rem;font-weight:700">₹24,800</div></div>
+      <div style="background:rgba(245,183,49,.1);border:1px solid rgba(245,183,49,.2);border-radius:10px;padding:14px"><div style="font-size:.68rem;color:#F5B731;margin-bottom:4px">GST PAYABLE</div><div style="font-size:1.5rem;font-weight:700">₹2,232</div></div>
+    </div>
+    <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px">
+      <div style="font-size:.82rem;font-weight:600;margin-bottom:12px">⚠️ Low stock alerts — Reorder needed</div>
+      <table style="width:100%;border-collapse:collapse;font-size:.78rem">
+        <thead><tr style="border-bottom:1px solid rgba(255,255,255,.07)">
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">PRODUCT</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">SKU</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">STOCK</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">REORDER LEVEL</th>
+          <th style="text-align:left;padding:8px;color:rgba(255,255,255,.4);font-size:.65rem">ACTION</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:10px">Blue Cotton Shirt</td><td style="padding:10px;color:rgba(255,255,255,.4);font-size:.7rem">SKU-4421</td><td style="padding:10px;color:#F04040;font-weight:600">3 units</td><td style="padding:10px;color:rgba(255,255,255,.4)">10 units</td><td style="padding:10px"><button onclick="alert('Purchase order created!')" style="background:rgba(20,184,166,.15);color:#14B8A6;border:1px solid rgba(20,184,166,.2);border-radius:6px;padding:4px 10px;font-size:.7rem;cursor:pointer">Reorder</button></td></tr>
+          <tr style="border-bottom:1px solid rgba(255,255,255,.05)"><td style="padding:10px">Black Jeans 32"</td><td style="padding:10px;color:rgba(255,255,255,.4);font-size:.7rem">SKU-2287</td><td style="padding:10px;color:#F5B731;font-weight:600">7 units</td><td style="padding:10px;color:rgba(255,255,255,.4)">15 units</td><td style="padding:10px"><button onclick="alert('Purchase order created!')" style="background:rgba(20,184,166,.15);color:#14B8A6;border:1px solid rgba(20,184,166,.2);border-radius:6px;padding:4px 10px;font-size:.7rem;cursor:pointer">Reorder</button></td></tr>
+          <tr><td style="padding:10px">White Formal Shirt</td><td style="padding:10px;color:rgba(255,255,255,.4);font-size:.7rem">SKU-3391</td><td style="padding:10px;color:#F04040;font-weight:600">2 units</td><td style="padding:10px;color:rgba(255,255,255,.4)">8 units</td><td style="padding:10px"><button onclick="alert('Purchase order created!')" style="background:rgba(20,184,166,.15);color:#14B8A6;border:1px solid rgba(20,184,166,.2);border-radius:6px;padding:4px 10px;font-size:.7rem;cursor:pointer">Reorder</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
+// ESC to close
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
